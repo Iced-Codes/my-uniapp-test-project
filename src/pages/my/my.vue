@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { useMemberStore } from '@/stores'
-import '@/utils/https'
+import { http } from '@/utils/https'
+
 const memberStore = useMemberStore()
 const getRequest = () => {
-  uni.request({
-    url: '/home/banner',
+  http({
+    url: '',
     method: 'GET',
+  }).then((res) => {
+    console.log(res)
   })
 }
 </script>

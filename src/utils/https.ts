@@ -23,4 +23,42 @@ const uniInterceptor = {
 
 uni.addInterceptor('request', uniInterceptor)
 uni.addInterceptor('uploadFile', uniInterceptor)
-// uni.addInterceptor('download', uniInterceptor)
+
+interface RequestData<T> {
+  code: number
+  msg: string
+  data: T
+}
+
+export const http = <T>(options: UniApp.RequestOptions) => {
+  return new Promise<RequestData<T>>((resolve, reject) => {
+    uni.request({
+      ...options,
+      success: (res) => {
+        if (res.statusCode === 200) {
+          resolve(res.data as RequestData<T>)
+        } else if (res.statusCode === 401) {
+          // token 失效
+          const memberStore = useMemberStore()
+          memberStore.clearProfile()
+          uni.navigateTo({ url: '/pages/login/login' })
+          reject(res)
+        } else {
+          // 其他错误
+          uni.showToast({
+            title: (res.data as RequestData<T>).msg || '请求失败',
+            icon: 'none',
+          })
+          reject(res)
+        }
+      },
+      fail: (err) => {
+        uni.showToast({
+          title: '请求失败',
+          icon: 'none',
+        })
+        reject(err)
+      },
+    })
+  })
+}

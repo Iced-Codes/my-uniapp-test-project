@@ -1,9 +1,12 @@
 <script setup lang="ts">
-//
+import CostornNavBar from './components/CostornNavBar.vue'
 </script>
 
 <template>
   <view class="index">
+    <CostornNavBar />
+    <my-swiper />
+
     <uni-card
       title="基础卡片"
       sub-title="副标题"
