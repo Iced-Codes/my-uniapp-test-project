@@ -10,17 +10,17 @@
         :interval="3000"
         :duration="500"
       >
-        <swiper-item v-for="(item, index) in background" :key="index">
-          <view class="swiper-item uni-bg-red" :style="{ backgroundColor: item }">
-            {{ index + 1 }}
+        <swiper-item v-for="(item, index) in list" :key="index">
+          <view class="swiper-item uni-bg-red">
+            <image :src="item.imgUrl" mode="scaleToFill" />
           </view>
         </swiper-item>
       </swiper>
 
       <view class="block-strip">
         <text
-          v-for="(item, index) in background"
-          :key="item"
+          v-for="(item, index) in list"
+          :key="item.id"
           class="strip"
           :style="{ backgroundColor: active === index ? '#fff' : '#fff5' }"
           @click="active = index"
@@ -32,7 +32,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-const background = ref(['#f55', '#5f5', '#55f'])
+const { list = [] } = defineProps<{
+  list: HomeBanner[]
+}>()
 const active = ref(0)
 /**
  *  swiper自动滑动事件

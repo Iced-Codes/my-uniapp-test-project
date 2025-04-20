@@ -1,11 +1,25 @@
 <script setup lang="ts">
+import { onLoad } from '@dcloudio/uni-app'
 import CostornNavBar from './components/CostornNavBar.vue'
+import { getHomeBanner } from '@/services/index'
+const bannerList = ref<HomeBanner[]>([])
+const getHomeBannerList = () => {
+  getHomeBanner().then((res) => {
+    if (res.code === '1') {
+      console.log('🚀 ~ getHomeBanner ~ res:', res)
+      bannerList.value = res.result
+    }
+  })
+}
+onLoad(() => {
+  getHomeBannerList()
+})
 </script>
 
 <template>
   <view class="index">
     <CostornNavBar />
-    <my-swiper />
+    <my-swiper :list="bannerList" />
 
     <uni-card
       title="基础卡片"

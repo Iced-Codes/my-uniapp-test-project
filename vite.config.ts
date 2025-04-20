@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import uni from '@dcloudio/vite-plugin-uni'
+import autoImport from 'unplugin-auto-import/vite'
 // https://vitejs.dev/config/
 export default defineConfig(async (config) => {
   return {
@@ -12,6 +13,21 @@ export default defineConfig(async (config) => {
         '@': '/src',
       },
     },
-    plugins: [uni()],
+    plugins: [
+      uni(),
+      autoImport({
+        imports: ['vue', 'pinia'],
+        dts: './src/auto-imports.d.ts',
+        dirs: [
+          'src/services',
+          'src/store',
+          'src/utils',
+          'src/hooks',
+          'src/types',
+          'src/composables',
+          'src/components',
+        ],
+      }),
+    ],
   }
 })
