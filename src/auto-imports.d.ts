@@ -20,6 +20,9 @@ declare global {
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
   const getHomeBanner: typeof import('./services/index')['getHomeBanner']
+  const getHomeCategoryMutli: typeof import('./services/index')['getHomeCategoryMutli']
+  const getHomeGoodsGuessLike: typeof import('./services/index')['getHomeGoodsGuessLike']
+  const getHomeHotMutli: typeof import('./services/index')['getHomeHotMutli']
   const h: typeof import('vue')['h']
   const http: typeof import('./utils/https')['http']
   const inject: typeof import('vue')['inject']
@@ -83,9 +86,9 @@ declare global {
   export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
   // @ts-ignore
-  export type { HomeBanner } from './types/home'
+  export type { HomeBanner, HomeCategoryMutli, HomeHotMutli, HomeGoodsGuessLike, Item } from './types/home'
   import('./types/home')
   // @ts-ignore
-  export type { GlobalComponents } from './components/components.d'
+  export type { GlobalComponents, GuessTemplateTypes } from './components/components.d'
   import('./components/components.d')
 }

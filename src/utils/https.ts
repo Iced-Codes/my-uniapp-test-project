@@ -26,7 +26,7 @@ uni.addInterceptor('uploadFile', uniInterceptor)
 interface RequestData<T> {
   code: string
   msg: string
-  result: T[]
+  result: T
 }
 
 export const http = <T>(options: UniApp.RequestOptions) => {
