@@ -21,6 +21,7 @@ declare global {
   const getCategoryTop: typeof import('./services/category')['getCategoryTop']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
+  const getGoods: typeof import('./services/category')['getGoods']
   const getHomeBanner: typeof import('./services/index')['getHomeBanner']
   const getHomeCategoryMutli: typeof import('./services/index')['getHomeCategoryMutli']
   const getHomeGoodsGuessLike: typeof import('./services/index')['getHomeGoodsGuessLike']
