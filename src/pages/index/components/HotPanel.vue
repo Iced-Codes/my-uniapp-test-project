@@ -5,9 +5,14 @@
         <text class="hot-h1">{{ item.title }}</text>
         <text class="hot-h2">{{ item.alt }}</text>
       </view>
-      <view class="hot-imgs">
+      <navigator
+        :url="`/pages/hot/hot?type=${item.type}`"
+        open-type="navigate"
+        hover-class="navigator-hover"
+        class="hot-imgs"
+      >
         <image v-for="pic in item.pictures" :key="pic" class="hot-img" :src="pic" />
-      </view>
+      </navigator>
     </view>
   </view>
 </template>

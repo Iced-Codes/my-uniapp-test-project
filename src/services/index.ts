@@ -1,9 +1,10 @@
 import { http } from '@/utils/https'
 /**获取首页轮播图 */
-export const getHomeBanner = () => {
+export const getHomeBanner = (params?: any) => {
   return http<HomeBanner[]>({
     url: '/home/banner',
     method: 'GET',
+    data: params,
   })
 }
 /**前台分类接口 */
