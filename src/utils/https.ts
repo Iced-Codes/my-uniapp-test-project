@@ -17,7 +17,6 @@ const uniInterceptor = {
     if (token) {
       options.header['Authorization'] = token
     }
-    console.log('🚀 ~ invoke ~ options:', options)
   },
 }
 
@@ -25,9 +24,9 @@ uni.addInterceptor('request', uniInterceptor)
 uni.addInterceptor('uploadFile', uniInterceptor)
 
 interface RequestData<T> {
-  code: number
+  code: string
   msg: string
-  data: T
+  result: T
 }
 
 export const http = <T>(options: UniApp.RequestOptions) => {

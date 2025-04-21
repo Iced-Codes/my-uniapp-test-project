@@ -17,8 +17,15 @@ declare global {
   const defineStore: typeof import('pinia')['defineStore']
   const effectScope: typeof import('vue')['effectScope']
   const getActivePinia: typeof import('pinia')['getActivePinia']
+  const getCategory: typeof import('./services/category')['getCategory']
+  const getCategoryTop: typeof import('./services/category')['getCategoryTop']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
+  const getHomeBanner: typeof import('./services/index')['getHomeBanner']
+  const getHomeCategoryMutli: typeof import('./services/index')['getHomeCategoryMutli']
+  const getHomeGoodsGuessLike: typeof import('./services/index')['getHomeGoodsGuessLike']
+  const getHomeHotMutli: typeof import('./services/index')['getHomeHotMutli']
+  const getHotApi: typeof import('./services/hot')['getHotApi']
   const h: typeof import('vue')['h']
   const http: typeof import('./utils/https')['http']
   const inject: typeof import('vue')['inject']
@@ -82,6 +89,9 @@ declare global {
   export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
   // @ts-ignore
-  export type { GlobalComponents } from './components/components.d'
+  export type { HomeBanner, HomeCategoryMutli, HomeHotMutli, HomeGoodsGuessLike, Item } from './types/home'
+  import('./types/home')
+  // @ts-ignore
+  export type { GlobalComponents, GuessTemplateTypes } from './components/components.d'
   import('./components/components.d')
 }
