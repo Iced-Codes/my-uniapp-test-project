@@ -40,13 +40,7 @@ const getHomeHotMutliData = async () => {
   //   }
   // })
 }
-const myGuessRef = ref<GuessTemplateTypes | null>(null)
-/**触底事件 */
-const onScrolltolower = () => {
-  if (myGuessRef.value) {
-    myGuessRef.value.getHomeGoodsGuessLikeData()
-  }
-}
+const { myGuessRef, onScrolltolower } = useGuessList()
 const isTriggered = ref(false)
 /**下拉刷新事件 */
 const onRefresherrefresh = () => {
