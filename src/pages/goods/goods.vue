@@ -2,6 +2,7 @@
 import { onLoad } from '@dcloudio/uni-app'
 import GoodsPicture from './components/GoodsPicture.vue'
 import AddressPanel from '../goods/components/AddressPanel.vue'
+import { postMemberCart } from '@/services/cart'
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
 
@@ -9,10 +10,29 @@ const props = defineProps<{
   id: string
 }>()
 //获取商品详情数据
+const localdata = ref({})
 const goodsDetail = ref<any>({})
 const getData = async () => {
   const res: any = await getGoods({ id: props.id })
   goodsDetail.value = res.result
+  localdata.value = {
+    _id: res.result.id,
+    name: res.result.name,
+    goods_thumb: res.result.mainPictures[0],
+    spec_list: res.result.specs.map((item: any) => ({
+      name: item.name,
+      list: item.values,
+    })),
+    sku_list: res.result.skus.map((item: any) => ({
+      _id: item.id,
+      goods_id: res.result.id,
+      goods_name: res.result.name,
+      image: item.picture,
+      price: item.price * 100,
+      stock: item.inventory,
+      sku_name_arr: item.specs.map((i: any) => i.valueName),
+    })),
+  }
 }
 //轮播图change事件
 const swiperCurrentPage = ref(1)
@@ -38,9 +58,52 @@ const showPopup = (v: 'picture' | 'address') => {
 onLoad(() => {
   getData()
 })
+
+const isShowSKU = ref(false)
+enum SKUMode {
+  ADD_CART = 2,
+  BUY_NOW = 3,
+  SELECT = 1,
+}
+const mode = ref<SKUMode>(1)
+const onOpenSkuPopup = (val: any) => {
+  isShowSKU.value = true
+  mode.value = val
+}
+const skuRef = ref()
+const selectText = computed(() => {
+  return skuRef.value?.selectArr?.join(' ').trim() || '请选择商品规格'
+})
+const onAddCart = async (sku: any) => {
+  const res = await postMemberCart({
+    skuId: sku._id,
+    count: sku.buy_num,
+  })
+
+  uni.showToast({
+    title: '加入购物车成功',
+    icon: 'none',
+  })
+  isShowSKU.value = false
+}
 </script>
 
 <template>
+  <vk-data-goods-sku-popup
+    v-model="isShowSKU"
+    :localdata="localdata"
+    :mode="mode"
+    add-cart-background-color="#ffa868"
+    buy-now-background-color="#27ba9b"
+    :avtive-color="{
+      color: '#27ba9b',
+      backgroundColor: '#e9f8f5',
+      borderColor: '#27ba9b',
+      borderWidth: '1rpx',
+    }"
+    @add-cart="onAddCart"
+    ref="skuRef"
+  />
   <scroll-view scroll-y class="viewport">
     <!-- 基本信息 -->
     <view class="goods">
@@ -72,7 +135,9 @@ onLoad(() => {
       <view class="action">
         <view class="item arrow">
           <text class="label">选择</text>
-          <text class="text ellipsis"> 请选择商品规格 </text>
+          <text class="text ellipsis" @click="onOpenSkuPopup(SKUMode.SELECT)">
+            {{ selectText }}
+          </text>
         </view>
         <view class="item arrow" @click="showPopup('address')">
           <text class="label">送至</text>
@@ -144,8 +209,8 @@ onLoad(() => {
       </navigator>
     </view>
     <view class="buttons">
-      <view class="addcart"> 加入购物车 </view>
-      <view class="buynow"> 立即购买 </view>
+      <view class="addcart" @click="onOpenSkuPopup(SKUMode.ADD_CART)"> 加入购物车 </view>
+      <view class="buynow" @click="onOpenSkuPopup(SKUMode.BUY_NOW)"> 立即购买 </view>
     </view>
   </view>
 

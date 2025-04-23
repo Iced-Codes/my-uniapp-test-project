@@ -62,6 +62,7 @@ declare global {
   const onUpdated: typeof import('vue')['onUpdated']
   const onWatcherCleanup: typeof import('vue')['onWatcherCleanup']
   const postMemberAddress: typeof import('./services/address')['postMemberAddress']
+  const postMemberCart: typeof import('./services/cart')['postMemberCart']
   const provide: typeof import('vue')['provide']
   const putMemberAddress: typeof import('./services/address')['putMemberAddress']
   const putMemberProfile: typeof import('./services/profile')['putMemberProfile']

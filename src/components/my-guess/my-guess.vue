@@ -6,6 +6,7 @@
         class="guess-item"
         open-type="navigate"
         hover-class="navigator-hover"
+        :url="`/pages/goods/goods?id=${item.id}`"
         v-for="item in goodsLikeData"
         :key="item.id"
       >
