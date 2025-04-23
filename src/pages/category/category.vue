@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app'
+import CategoryPageSkeleton from './components/CategoryPageSkeleton.vue'
+
 //获取分类轮播图数据
 const swiperList = ref<any>([])
 const getSwiperData = async () => {
@@ -14,14 +16,18 @@ const getClassifyData = async () => {
 }
 //分类选择
 const activeTab = ref(0)
-onLoad(() => {
-  getSwiperData()
-  getClassifyData()
+//request是否完成
+const isTriggered = ref(false)
+onLoad(async () => {
+  isTriggered.value = true
+  await Promise.all([getSwiperData(), getClassifyData()])
+  isTriggered.value = false
 })
 </script>
 
 <template>
-  <view class="viewport">
+  <CategoryPageSkeleton v-if="isTriggered" />
+  <view class="viewport" v-else>
     <!-- 搜索框 -->
     <view class="search">
       <view class="input">
@@ -47,7 +53,7 @@ onLoad(() => {
         <!-- 焦点图 -->
         <my-swiper class="banner" :list="swiperList" />
         <!-- 内容区域 -->
-        <view class="panel" v-for="item in classifyList[activeTab].children" :key="item.id">
+        <view class="panel" v-for="item in classifyList[activeTab]?.children || []" :key="item.id">
           <view class="title">
             <text class="name">{{ item.name }}</text>
             <navigator class="more" hover-class="none">全部</navigator>
