@@ -29,7 +29,7 @@ const getData = async () => {
       goods_name: res.result.name,
       image: item.picture,
       price: item.price * 100,
-      stock: item.inventory,
+      stock: item.inventory + 100,
       sku_name_arr: item.specs.map((i: any) => i.valueName),
     })),
   }
@@ -70,21 +70,24 @@ const onOpenSkuPopup = (val: any) => {
   isShowSKU.value = true
   mode.value = val
 }
+
 const skuRef = ref()
 const selectText = computed(() => {
   return skuRef.value?.selectArr?.join(' ').trim() || '请选择商品规格'
 })
+//添加购物车
 const onAddCart = async (sku: any) => {
-  const res = await postMemberCart({
-    skuId: sku._id,
-    count: sku.buy_num,
-  })
-
+  await postMemberCart({ skuId: sku._id, count: sku.buy_num })
   uni.showToast({
     title: '加入购物车成功',
     icon: 'none',
   })
   isShowSKU.value = false
+}
+//立即购买
+const onBuyNow = (e: any) => {
+  console.log('🚀 ~ onBuyNow ~ e:', e)
+  uni.navigateTo({ url: `/pagesOrder/create/create?skuId=${e._id}&count=${e.buy_num}` })
 }
 </script>
 
@@ -102,6 +105,7 @@ const onAddCart = async (sku: any) => {
       borderWidth: '1rpx',
     }"
     @add-cart="onAddCart"
+    @buy-now="onBuyNow"
     ref="skuRef"
   />
   <scroll-view scroll-y class="viewport">
@@ -184,7 +188,7 @@ const onAddCart = async (sku: any) => {
           :key="item.id"
           class="goods"
           hover-class="none"
-          :url="`/pages/goods/goods?id=`"
+          :url="`/pages/goods/goods?id=${item.id}`"
         >
           <image class="image" mode="aspectFill" :src="item.picture"></image>
           <view class="name ellipsis">{{ item.name }}</view>
@@ -204,7 +208,7 @@ const onAddCart = async (sku: any) => {
       <button class="icons-button" open-type="contact">
         <text class="icon-handset"></text>客服
       </button>
-      <navigator class="icons-button" url="/pages/cart/cart" open-type="switchTab">
+      <navigator class="icons-button" url="/pages/cart/cart2" open-type="navigate">
         <text class="icon-cart"></text>购物车
       </navigator>
     </view>
