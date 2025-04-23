@@ -7,11 +7,11 @@ export const getMemberProfile = () => {
     method: 'GET',
   })
 }
-//修改用户头像
-export const getMemberProfileAvatar = (data: any) => {
+//修改用户信息
+export const putMemberProfile = (data: any) => {
   return http({
-    url: '/member/profile/avatar',
-    method: 'GET',
+    url: '/member/profile',
+    method: 'PUT',
     data,
   })
 }
