@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { login } from '@/services/login'
+import { login, loginSimple } from '@/services/login'
 import { useMemberStore } from '@/stores'
 import { onLoad } from '@dcloudio/uni-app'
 

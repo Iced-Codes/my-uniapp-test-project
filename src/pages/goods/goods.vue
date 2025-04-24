@@ -3,6 +3,8 @@ import { onLoad } from '@dcloudio/uni-app'
 import GoodsPicture from './components/GoodsPicture.vue'
 import AddressPanel from '../goods/components/AddressPanel.vue'
 import { postMemberCart } from '@/services/cart'
+import { useAddressStore } from '@/stores/modules/address'
+const addressStore = useAddressStore()
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
 
@@ -86,8 +88,16 @@ const onAddCart = async (sku: any) => {
 }
 //立即购买
 const onBuyNow = (e: any) => {
-  console.log('🚀 ~ onBuyNow ~ e:', e)
   uni.navigateTo({ url: `/pagesOrder/create/create?skuId=${e._id}&count=${e.buy_num}` })
+}
+
+//获取地址
+const onAddressPanelClose = (v: any) => {
+  popup.value?.close()
+  if (v) {
+    addressStore.serSelectAddress(v)
+  }
+  console.log('🚀 ~ onAddressPanelClose ~ addressStore:', addressStore.selectAddress)
 }
 </script>
 
@@ -145,7 +155,9 @@ const onBuyNow = (e: any) => {
         </view>
         <view class="item arrow" @click="showPopup('address')">
           <text class="label">送至</text>
-          <text class="text ellipsis"> 请选择收获地址 </text>
+          <text class="text ellipsis">
+            {{ addressStore.selectAddress?.fullLocation || '请选择收获地址' }}
+          </text>
         </view>
         <view class="item arrow" @click="showPopup('picture')">
           <text class="label">服务</text>
@@ -222,7 +234,7 @@ const onBuyNow = (e: any) => {
 
   <uni-popup ref="popup" type="bottom" background-color="#fff">
     <GoodsPicture @close="popup?.close()" v-show="popupType === 'picture'" />
-    <AddressPanel @close="popup?.close()" v-show="popupType === 'address'" />
+    <AddressPanel @close="onAddressPanelClose" v-show="popupType === 'address'" />
   </uni-popup>
 </template>
 
