@@ -7,6 +7,7 @@
 export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
+  const OrderState: typeof import('./services/constants')['OrderState']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
@@ -17,6 +18,7 @@ declare global {
   const defineStore: typeof import('pinia')['defineStore']
   const deleteMemberAddress: typeof import('./services/address')['deleteMemberAddress']
   const deleteMemberCart: typeof import('./services/cart')['deleteMemberCart']
+  const deleteMemberOrderAPI: typeof import('./services/order')['deleteMemberOrderAPI']
   const effectScope: typeof import('vue')['effectScope']
   const getActivePinia: typeof import('pinia')['getActivePinia']
   const getCategory: typeof import('./services/category')['getCategory']
@@ -31,11 +33,17 @@ declare global {
   const getHotApi: typeof import('./services/hot')['getHotApi']
   const getMemberAddress: typeof import('./services/address')['getMemberAddress']
   const getMemberCart: typeof import('./services/cart')['getMemberCart']
+  const getMemberOrder: typeof import('./services/order')['getMemberOrder']
+  const getMemberOrderAPI: typeof import('./services/order')['getMemberOrderAPI']
+  const getMemberOrderConsignmentByIdAPI: typeof import('./services/order')['getMemberOrderConsignmentByIdAPI']
+  const getMemberOrderLogisticsByIdAPI: typeof import('./services/order')['getMemberOrderLogisticsByIdAPI']
   const getMemberOrderPer: typeof import('./services/order')['getMemberOrderPer']
   const getMemberOrderPre: typeof import('./services/order')['getMemberOrderPre']
   const getMemberOrderPreNow: typeof import('./services/order')['getMemberOrderPreNow']
   const getMemberProfile: typeof import('./services/profile')['getMemberProfile']
   const getMemberProfileAvatar: typeof import('./services/profile')['getMemberProfileAvatar']
+  const getPayMockAPI: typeof import('./services/pay')['getPayMockAPI']
+  const getPayWxPayMiniPayAPI: typeof import('./services/pay')['getPayWxPayMiniPayAPI']
   const h: typeof import('vue')['h']
   const http: typeof import('./utils/https')['http']
   const inject: typeof import('vue')['inject']
@@ -66,12 +74,15 @@ declare global {
   const onUnmounted: typeof import('vue')['onUnmounted']
   const onUpdated: typeof import('vue')['onUpdated']
   const onWatcherCleanup: typeof import('vue')['onWatcherCleanup']
+  const orderStateList: typeof import('./services/constants')['orderStateList']
   const postMemberAddress: typeof import('./services/address')['postMemberAddress']
   const postMemberCart: typeof import('./services/cart')['postMemberCart']
+  const postMemberOrder: typeof import('./services/order')['postMemberOrder']
   const provide: typeof import('vue')['provide']
   const putMemberAddress: typeof import('./services/address')['putMemberAddress']
   const putMemberCart: typeof import('./services/cart')['putMemberCart']
   const putMemberCartSelected: typeof import('./services/cart')['putMemberCartSelected']
+  const putMemberOrderReceiptByIdAPI: typeof import('./services/order')['putMemberOrderReceiptByIdAPI']
   const putMemberProfile: typeof import('./services/profile')['putMemberProfile']
   const reactive: typeof import('vue')['reactive']
   const readonly: typeof import('vue')['readonly']
@@ -107,6 +118,9 @@ declare global {
   // @ts-ignore
   export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
+  // @ts-ignore
+  export type { OrderState } from './services/constants'
+  import('./services/constants')
   // @ts-ignore
   export type { HomeBanner, HomeCategoryMutli, HomeHotMutli, HomeGoodsGuessLike, Item } from './types/home'
   import('./types/home')

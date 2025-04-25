@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getMemberOrderPre } from '@/services/order'
+import { getMemberOrderPre, postMemberOrder } from '@/services/order'
 import { onLoad } from '@dcloudio/uni-app'
 import { computed, ref, toRefs } from 'vue'
 import { useAddressStore } from '@/stores/modules/address'
@@ -48,6 +48,32 @@ const defaultSite = computed(() => {
 onLoad(() => {
   getOrderData()
 })
+
+const onOrderSubmit = async () => {
+  console.log(defaultSite.value)
+
+  if (!defaultSite.value?.id) {
+    return uni.showToast({
+      title: '请选择收货地址',
+      icon: 'none',
+      mask: true,
+    })
+  }
+
+  const res: any = await postMemberOrder({
+    addressId: defaultSite.value.id,
+    buyerMessage: buyerMessage.value,
+    deliveryList: activeDelivery.value.type,
+    goods: orderPre.value.goods.map((item: any) => ({
+      skuId: item.id,
+      count: item.count,
+    })),
+    payChanel: 2,
+    payType: 1,
+  })
+  console.log('🚀 ~ onOrderSubmit ~ res:', res)
+  uni.navigateTo({ url: `/pagesOrder/pay/pay?id=${res.result.id}` })
+}
 </script>
 
 <template>
@@ -132,7 +158,9 @@ onLoad(() => {
     <view class="total-pay symbol">
       <text class="number">{{ orderPre.summary?.totalPayPrice.toFixed(2) }}</text>
     </view>
-    <view class="button" :class="{ disabled: true }"> 提交订单 </view>
+    <view @click="onOrderSubmit" class="button" :class="{ disabled: !defaultSite?.id }">
+      提交订单
+    </view>
   </view>
 </template>
 
