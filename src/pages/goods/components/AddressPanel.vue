@@ -1,8 +1,25 @@
 <script setup lang="ts">
+import { onLoad } from '@dcloudio/uni-app'
+
 //
 const emit = defineEmits<{
   close: [any?]
 }>()
+const addressList = ref<any>([])
+const getAddressDataList = async () => {
+  const res = await getMemberAddress()
+  addressList.value = res.result
+}
+onLoad(() => {
+  getAddressDataList()
+})
+
+const active = ref<any>(null)
+const activeData = ref<any>(null)
+const onActiveFn = (v: any) => {
+  active.value = v.id
+  activeData.value = v
+}
 </script>
 
 <template>
@@ -13,25 +30,25 @@ const emit = defineEmits<{
     <view class="title">配送至</view>
     <!-- 内容 -->
     <view class="content">
-      <view class="item">
-        <view class="user">李明 13824686868</view>
-        <view class="address">北京市顺义区后沙峪地区安平北街6号院</view>
-        <text class="icon icon-checked"></text>
-      </view>
-      <view class="item">
-        <view class="user">王东 13824686868</view>
-        <view class="address">北京市顺义区后沙峪地区安平北街6号院</view>
-        <text class="icon icon-ring"></text>
-      </view>
-      <view class="item">
-        <view class="user">张三 13824686868</view>
-        <view class="address">北京市朝阳区孙河安平北街6号院</view>
-        <text class="icon icon-ring"></text>
+      <view class="item" v-for="item in addressList" :key="item.id">
+        <view class="user">{{ item.receiver }} {{ item.contact }}</view>
+        <view class="address">{{ item.fullLocation }}{{ item.address }}</view>
+        <text
+          @click="onActiveFn(item)"
+          class="icon"
+          :class="[active === item.id ? 'icon-checked' : 'icon-ring']"
+        ></text>
       </view>
     </view>
     <view class="footer">
-      <view class="button primary"> 新建地址 </view>
-      <view v-if="false" class="button primary" @click="emit('close')">确定</view>
+      <navigator
+        class="button primary"
+        hover-class="none"
+        url="/pagesMember/address-form/address-form"
+      >
+        新建地址
+      </navigator>
+      <view v-if="active" class="button primary" @click="emit('close', activeData)">确定</view>
     </view>
   </view>
 </template>
